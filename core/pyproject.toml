@@ -11,6 +11,9 @@ packages = [{include = "ptm_core"}]
 python = "^3.10"
 
 
+[tool.poetry.group.dev.dependencies]
+alembic = "^1.9.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
