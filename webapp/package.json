@@ -4,6 +4,7 @@
   "description": "PTM Center (Patient Transfer Management Center)",
   "main": "index.js",
   "scripts": {
+    "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/newtonjose/engenharia-software-pas/issues"
   },
-  "homepage": "https://github.com/newtonjose/engenharia-software-pas#readme"
+  "homepage": "https://github.com/newtonjose/engenharia-software-pas#readme",
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.18.2",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "pug": "^2.0.4"
+  }
 }
