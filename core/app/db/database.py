@@ -1,4 +1,4 @@
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session, create_engine
 
 from app.models.transference_request import *
 from app.models.medical_specialty import *
@@ -12,10 +12,10 @@ from app.models.hospital import *
 
 # PostgreSQL version:
 USER = "postgres"
-PASSWORD = 123456789
+PASSWORD = "development"
 HOST = "localhost"
 PORT = 5432
-DATABASE = "stp"
+DATABASE = "ptm"
 
 CONNECTION_URL = f"postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
 engine = create_engine(CONNECTION_URL, echo=True)

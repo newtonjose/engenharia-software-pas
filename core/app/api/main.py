@@ -12,7 +12,9 @@ def start():
 
 
 app = FastAPI(
-    title="Sistema de Transferência de Pacientes (STP)", version="0.0.1", docs_url=None
+    title="PTM Center (Patient Transfer Management Center)",
+    version="0.0.1",
+    docs_url=None,
 )
 
 FAVICON_PATH = "favicon.ico"
