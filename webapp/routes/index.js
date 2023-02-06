@@ -1,5 +1,5 @@
 const express = require('express');
-const activateXR = require('../app/hello-webxr');
+const { startAppXr } = require("../src/app-xr.js");
 const router = express.Router();
 
 
@@ -10,8 +10,11 @@ router.get('/', function(req, res, _next) {
 
 
 router.get('/hello-webxr', function(req, res, _next) {
+  startAppXr().then(r => r)
+
   res.render('webxr/hello-webxr', { title: 'WebXR'});
 });
+
 
 
 module.exports = router;
