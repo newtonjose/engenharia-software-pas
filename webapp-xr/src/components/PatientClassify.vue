@@ -1,9 +1,26 @@
+<script setup>
+import PatientCard from "./PatientCard.vue";
+</script>
+
 <script>
 import { checkXR } from "../js/session";
+
 export default {
   data() {
     return {
       isSessionSupported: false,
+      patients: [
+        {
+          name: "Patient 1",
+          cpf: "123456789",
+          infos: "Some Infos about the patient 1",
+        },
+        {
+          name: "Patient 2",
+          cpf: "987654321",
+          infos: "Some Infos about the patient 2",
+        },
+      ],
     };
   },
 
@@ -30,12 +47,17 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div @click="enterToScene" id="landing-div">
-      <p class="text-center">Immersive-VR Web App</p>
-      <button id="xr-button" class="basicButton">VR not found</button>
-    </div>
-  </div>
+  <v-list lines="one">
+    <v-list-item v-for="patient in patients" :key="patient.cpf"
+      ><PatientCard :patient="patient"
+    /></v-list-item>
+  </v-list>
+  <!--  <div>-->
+  <!--    <div @click="enterToScene" id="landing-div">-->
+  <!--      <p class="text-center">Immersive-VR Web App</p>-->
+  <!--      <button id="xr-button" class="basicButton">VR not found</button>-->
+  <!--    </div>-->
+  <!--  </div>-->
 </template>
 
 <style scoped>

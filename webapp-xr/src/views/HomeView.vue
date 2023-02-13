@@ -1,5 +1,5 @@
 <script setup>
-import WebXR from "../components/WebXR.vue";
+import WebXR from "../components/PatientClassify.vue";
 </script>
 
 <template>
