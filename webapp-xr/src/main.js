@@ -10,6 +10,9 @@ import * as directives from "vuetify/directives";
 import "./assets/main.css";
 
 const vuetify = createVuetify({
+  theme: {
+    defaultTheme: "dark",
+  },
   components,
   directives,
 });
