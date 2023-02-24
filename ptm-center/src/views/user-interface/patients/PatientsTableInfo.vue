@@ -1,4 +1,5 @@
 <script setup>
+import PatientAvatar from '@core/'
 const data = [
   {
     responsiveId: '',
@@ -178,6 +179,18 @@ const usreList = data
             >
               {{ status[row.status] }}
             </VChip>
+          </td>
+          <td>
+            <VBtn
+              color="primary"
+              @click="refInputEl?.click()"
+            >
+              <VIcon
+                icon="mdi-cloud-upload-outline"
+                class="d-sm-none"
+              />
+              <PatientAvatar />
+            </VBtn>
           </td>
         </tr>
       </tbody>
