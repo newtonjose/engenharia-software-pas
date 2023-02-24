@@ -1,69 +1,68 @@
 <script setup>
+import * as THREE from 'three'
+import { WebXRButton } from '@/plugins/webxr/util/webxr-button'
 
-import * as THREE from 'three';
-import { WebXRButton } from 'src/plugins/webxr/util/webxr-button.js';
+let camera, scene, renderer
+let controller
 
-let camera, scene, renderer;
-let controller;
-
-init();
-animate();
+init()
+animate()
 
 function init() {
 
-  const container = document.createElement( 'div' );
-  document.body.appendChild( container );
+  const container = document.createElement( 'div' )
+  document.body.appendChild( container )
 
-  scene = new THREE.Scene();
+  scene = new THREE.Scene()
 
-  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
+  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 )
 
-  const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
-  light.position.set( 0.5, 1, 0.25 );
-  scene.add( light );
-
-  //
-
-  renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
-  renderer.setPixelRatio( window.devicePixelRatio );
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  renderer.xr.enabled = true;
-  container.appendChild( renderer.domElement );
+  const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 )
+  light.position.set( 0.5, 1, 0.25 )
+  scene.add( light )
 
   //
 
-  document.body.appendChild( WebXRButton.createButton( renderer ) );
+  renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } )
+  renderer.setPixelRatio( window.devicePixelRatio )
+  renderer.setSize( window.innerWidth, window.innerHeight )
+  renderer.xr.enabled = true
+  container.appendChild( renderer.domElement )
 
   //
 
-  const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 32 ).rotateX( Math.PI / 2 );
+  document.body.appendChild( WebXRButton.createButton( renderer ) )
+
+  //
+
+  const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 32 ).rotateX( Math.PI / 2 )
 
   function onSelect() {
 
-    const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
-    const mesh = new THREE.Mesh( geometry, material );
-    mesh.position.set( 0, 0, - 0.3 ).applyMatrix4( controller.matrixWorld );
-    mesh.quaternion.setFromRotationMatrix( controller.matrixWorld );
-    scene.add( mesh );
+    const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } )
+    const mesh = new THREE.Mesh( geometry, material )
+    mesh.position.set( 0, 0, - 0.3 ).applyMatrix4( controller.matrixWorld )
+    mesh.quaternion.setFromRotationMatrix( controller.matrixWorld )
+    scene.add( mesh )
 
   }
 
-  controller = renderer.xr.getController( 0 );
-  controller.addEventListener( 'select', onSelect );
-  scene.add( controller );
+  controller = renderer.xr.getController( 0 )
+  controller.addEventListener( 'select', onSelect )
+  scene.add( controller )
 
   //
 
-  window.addEventListener( 'resize', onWindowResize );
+  window.addEventListener( 'resize', onWindowResize )
 
 }
 
 function onWindowResize() {
 
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
 
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setSize( window.innerWidth, window.innerHeight )
 
 }
 
@@ -71,20 +70,24 @@ function onWindowResize() {
 
 function animate() {
 
-  renderer.setAnimationLoop( render );
+  renderer.setAnimationLoop( render )
 
 }
 
 function render() {
 
-  renderer.render( scene, camera );
+  renderer.render( scene, camera )
 
 }
 </script>
 
 <template>
   <div id="info">
-    <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> ar - cones<br/>(Chrome Android 81+)
+    <a
+      href="https://threejs.org"
+      target="_blank"
+      rel="noopener"
+    >three.js</a> ar - cones<br>(Chrome Android 81+)
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 <script setup>
-import PatientAvatar from '@core/'
+import PatientAvatar from '@core/components/webxr/PatientAvatar.vue'
+
 const data = [
   {
     responsiveId: '',
@@ -127,6 +128,7 @@ const headers = [
   'SALARY',
   'AGE',
   'STATUS',
+  'AVATAR',
 ]
 const usreList = data
 </script>
@@ -182,14 +184,9 @@ const usreList = data
           </td>
           <td>
             <VBtn
-              color="primary"
-              @click="refInputEl?.click()"
+              @click="$router.push({ path: `/patients/${row.id}/avatar` })"
             >
-              <VIcon
-                icon="mdi-cloud-upload-outline"
-                class="d-sm-none"
-              />
-              <PatientAvatar />
+              BTN
             </VBtn>
           </td>
         </tr>
