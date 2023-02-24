@@ -1,6 +1,10 @@
 <script setup>
 import * as THREE from 'three'
-import { WebXRButton } from '@/plugins/webxr/util/webxr-button'
+import { ARButton } from 'three/addons/webxr/ARButton.js'
+
+import pages2 from '@/assets/images/pages/2.png'
+import avatar1 from '@/assets/images/avatars/avatar-1.png'
+
 
 let camera, scene, renderer
 let controller
@@ -10,8 +14,8 @@ animate()
 
 function init() {
 
-  const container = document.createElement( 'div' )
-  document.body.appendChild( container )
+  // const container = document.createElement( 'div' )
+  // document.body.appendChild( container )
 
   scene = new THREE.Scene()
 
@@ -27,11 +31,12 @@ function init() {
   renderer.setPixelRatio( window.devicePixelRatio )
   renderer.setSize( window.innerWidth, window.innerHeight )
   renderer.xr.enabled = true
-  container.appendChild( renderer.domElement )
+  document.body.appendChild(renderer.domElement)
+  // container.appendChild( renderer.domElement )
 
   //
 
-  document.body.appendChild( WebXRButton.createButton( renderer ) )
+  document.body.appendChild( ARButton.createButton( renderer ) )
 
   //
 
@@ -82,17 +87,58 @@ function render() {
 </script>
 
 <template>
-  <div id="info">
-    <a
-      href="https://threejs.org"
-      target="_blank"
-      rel="noopener"
-    >three.js</a> ar - cones<br>(Chrome Android 81+)
-  </div>
+  <VRow>
+    <VCol
+      cols="12"
+      sm="6"
+      md="4"
+    >
+      <VCard>
+        <VImg :src="pages2" />
+
+        <VCardText class="position-relative">
+          <!-- User Avatar -->
+          <VAvatar
+            size="75"
+            class="avatar-center"
+            :image="avatar1"
+          />
+
+          <!-- Title, Subtitle & Action Button -->
+          <div class="d-flex justify-space-between flex-wrap pt-8">
+            <div class="me-2 mb-2">
+              <VCardTitle class="pa-0">
+                Robert Meyer
+              </VCardTitle>
+              <VCardSubtitle class="text-caption pa-0">
+                London, UK
+              </VCardSubtitle>
+            </div>
+            <VBtn>send request</VBtn>
+          </div>
+        </VCardText>
+      </VCard>
+    </VCol>
+  </VRow>
 </template>
 
+<style lang="scss" scoped>
+.avatar-center {
+  position: absolute;
+  border: 3px solid rgb(var(--v-theme-surface));
+  inset-block-start: -2rem;
+  inset-inline-start: 1rem;
+}
 
+// membership pricing
+.member-pricing-bg {
+  position: relative;
+  background-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
+}
 
-<style scoped>
-
+.membership-pricing {
+  sup {
+    inset-block-start: 9px;
+  }
+}
 </style>

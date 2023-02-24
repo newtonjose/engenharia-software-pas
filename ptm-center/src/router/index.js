@@ -8,6 +8,16 @@ import PatientAvatar from '@core/components/webxr/PatientAvatar.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // {
+    //   path: '/patients/:id',
+    //   component: PatientAvatar,
+    //   children: [
+    //     {
+    //       path: 'avatar',
+    //       component: PatientAvatar,
+    //     },
+    //   ],
+    // },
     ...setupLayouts(routes),
   ],
   scrollBehavior() {
