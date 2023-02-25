@@ -4,8 +4,6 @@ import PatientsTableInfo from '@/views/user-interface/patients/PatientsTableInfo
 const navigationTab = ref('ITEM ONE')
 const tabItems = [
   'ITEM ONE',
-  'ITEM TWO',
-  'ITEM THREE',
 ]
 
 // const tabContent =
