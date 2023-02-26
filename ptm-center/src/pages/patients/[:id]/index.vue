@@ -34,20 +34,19 @@ import avatar1 from '@/assets/images/avatars/avatar-1.png'
 
             <VCardActions>
               <VBtn
-                target="_blank"
-                rel="noopener noreferrer"
-                @click="$router.push({ path: `/patients/${$route.params.id}/body` })"
-              >
-                Body
-              </VBtn>
-
-              <VBtn
                 rel="noopener noreferrer"
                 color="primary"
                 target="_blank"
                 @click="$router.push({ path: `/patients/${$route.params.id}/avatar` })"
               >
                 Avatar
+              </VBtn>
+              <VBtn
+                target="_blank"
+                rel="noopener noreferrer"
+                @click="$router.push({ path: `/patients/${$route.params.id}/body` })"
+              >
+                Body
               </VBtn>
             </VCardActions>
           </div>

@@ -1,7 +1,7 @@
 import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '~pages'
-import PatientAvatar from '@core/components/webxr/PatientAvatar.vue'
+import PatientAvatar from '@core/components/webxr/XrButton.vue'
 
 // routes.patients.children = [{  path: 'profile', component: PatientAvatar }]
 

@@ -4,17 +4,8 @@
 
 <template>
   <div>
-
-    <!-- more icons -->
-    <div class="text-center">
-      <VBtn
-        href="https://materialdesignicons.com/"
-        rel="noopener noreferrer"
-        color="primary"
-        target="_blank"
-      >
-        VIRTUAL
-      </VBtn>
-    </div>
+    <p class="text-2xl mb-6">
+      Body
+    </p>
   </div>
 </template>

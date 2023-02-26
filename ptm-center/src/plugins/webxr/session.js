@@ -1,199 +1,220 @@
-import { WebXRButton } from "./util/webxr-button.js";
-import { Scene } from "./render/scenes/scene.js";
-import { Renderer, createWebGLContext } from "./render/core/renderer.js";
-import { Gltf2Node } from "./render/nodes/gltf2.js";
-import { SkyboxNode } from "./render/nodes/skybox.js";
+import {
+  scene,
+  camera,
+  reticle,
+  renderer,
+  initScene,
+  modelLoaded,
+  getModelOnSelect,
+  targetObject,
+  existModelsOnScene,
+  cancelTargetObject,
+} from './scene.js'
 
-let xrButton = null;
-let sessionSupported = false;
-let xrRefSpace = null;
-let xrSession = null;
+let xrButton = null
+let sessionSupported = false
+let xrSession = null
+let xrRefSpace = null
+let xrHitTestSource = null
+let gl = null
+let isCatalogueOpen = false
+let objectSelectedButtons = false
+let placeObjectButtons = false
 
-// WebGL scene globals.
-let gl = null;
-let renderer = null;
-let scene = new Scene();
-scene.addNode(new Gltf2Node({ url: "./assets/models/space/space.gltf" }));
-scene.addNode(
-  new SkyboxNode({ url: "./assets/models/space/milky-way-4k.png" })
-);
-
-// Checks to see if WebXR is available and, if so, queries a list of
-// XRDevices that are connected to the system.
-function initXR() {
-  // Adds a helper button to the page that indicates if any XRDevices are
-  // available and let's the user pick between them if there's multiple.
-  xrButton = new WebXRButton({
-    onRequestSession: onRequestSession,
-    onEndSession: onEndSession,
-  });
-  document.querySelector("header").appendChild(xrButton.domElement);
-
-  // Is WebXR available on this UA?
-  if (navigator.xr) {
-    // If the device allows creation of exclusive sessions set it as the
-    // target of the 'Enter XR' button.
-    navigator.xr.isSessionSupported("immersive-vr").then((supported) => {
-      xrButton.enabled = supported;
-    });
-  }
-}
-
-// Called when the user selects a device to present to. In response we
-// will request an exclusive session from that device.
-function onRequestSession() {
-  return navigator.xr.requestSession("immersive-vr").then(onSessionStarted);
-}
-
-// Called when we've successfully acquired a XRSession. In response we
-// will set up the necessary session state and kick off the frame loop.
-function onSessionStarted(session) {
-  xrSession = session;
-  // This informs the 'Enter XR' button that the session has started and
-  // that it should display 'Exit XR' instead.
-  xrButton.setSession(session);
-
-  // Listen for the sessions 'end' event so we can respond if the user
-  // or UA ends the session for any reason.
-  session.addEventListener("end", onSessionEnded);
-
-  // Create a WebGL context to render with, initialized to be compatible
-  // with the XRDisplay we're presenting to.
-  gl = createWebGLContext({
-    xrCompatible: true,
-  });
-
-  // Create a renderer with that GL context (this is just for the samples
-  // framework and has nothing to do with WebXR specifically.)
-  renderer = new Renderer(gl);
-
-  // Set the scene's renderer, which creates the necessary GPU resources.
-  scene.setRenderer(renderer);
-
-  // Use the new WebGL context to create a XRWebGLLayer and set it as the
-  // sessions baseLayer. This allows any content rendered to the layer to
-  // be displayed on the XRDevice.
-  session.updateRenderState({ baseLayer: new XRWebGLLayer(session, gl) });
-
-  // Get a frame of reference, which is required for querying poses. In
-  // this case an 'local' frame of reference means that all poses will
-  // be relative to the location where the XRDevice was first detected.
-  session.requestReferenceSpace("local").then((refSpace) => {
-    xrRefSpace = refSpace;
-
-    // Inform the session that we're ready to begin drawing.
-    session.requestAnimationFrame(onXRFrame);
-  });
-}
-
-// Called when the user clicks the 'Exit XR' button. In response we end
-// the session.
-function onEndSession(session) {
-  session.end();
-}
-
-// Called either when the user has explicitly ended the session (like in
-// onEndSession()) or when the UA has ended the session for any reason.
-// At this point the session object is no longer usable and should be
-// discarded.
-function onSessionEnded(event) {
-  xrButton.setSession(null);
-
-  // In this simple case discard the WebGL context too, since we're not
-  // rendering anything else to the screen with it.
-  renderer = null;
-}
-
-// Called every time the XRSession requests that a new frame be drawn.
-function onXRFrame(t, frame) {
-  let session = frame.session;
-
-  // Per-frame scene setup. Nothing WebXR specific here.
-  scene.startFrame();
-
-  // Inform the session that we're ready for the next frame.
-  session.requestAnimationFrame(onXRFrame);
-
-  // Get the XRDevice pose relative to the Frame of Reference we created
-  // earlier.
-  let pose = frame.getViewerPose(xrRefSpace);
-
-  // Getting the pose may fail if, for example, tracking is lost. So we
-  // have to check to make sure that we got a valid pose before attempting
-  // to render with it. If not in this case we'll just leave the
-  // framebuffer cleared, so tracking loss means the scene will simply
-  // disappear.
-  if (pose) {
-    let glLayer = session.renderState.baseLayer;
-
-    // If we do have a valid pose, bind the WebGL layer's framebuffer,
-    // which is where any content to be displayed on the XRDevice must be
-    // rendered.
-    gl.bindFramebuffer(gl.FRAMEBUFFER, glLayer.framebuffer);
-
-    // Clear the framebuffer
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    // Loop through each of the views reported by the frame and draw them
-    // into the corresponding viewport.
-    for (let view of pose.views) {
-      let viewport = glLayer.getViewport(view);
-      gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-
-      // Draw this view of the scene. What happens in this function really
-      // isn't all that important. What is important is that it renders
-      // into the XRWebGLLayer's framebuffer, using the viewport into that
-      // framebuffer reported by the current view, and using the
-      // projection matrix and view transform from the current view.
-      // We bound the framebuffer and viewport up above, and are passing
-      // in the appropriate matrices here to be used when rendering.
-      scene.draw(view.projectionMatrix, view.transform);
-    }
-  } else {
-    // There's several options for handling cases where no pose is given.
-    // The simplest, which these samples opt for, is to simply not draw
-    // anything. That way the device will continue to show the last frame
-    // drawn, possibly even with reprojection. Alternately you could
-    // re-draw the scene again with the last known good pose (which is now
-    // likely to be wrong), clear to black, or draw a head-locked message
-    // for the user indicating that they should try to get back to an area
-    // with better tracking. In all cases it's possible that the device
-    // may override what is drawn here to show the user it's own error
-    // message, so it should not be anything critical to the application's
-    // use.
-  }
-
-  // Per-frame scene teardown. Nothing WebXR specific here.
-  scene.endFrame();
+export function setObjectSelectedButtons(value) {
+  objectSelectedButtons = value
 }
 
 export async function checkXR() {
-  xrButton = document.getElementById("xr-button");
+  xrButton = document.getElementById('xr-button')
   if (navigator.xr) {
-    await checkSupportedState();
-    return sessionSupported;
+    await checkSupportedState()
+    
+    return sessionSupported
   }
 }
 
 function checkSupportedState() {
   return new Promise((resolve, reject) => {
-    navigator.xr.isSessionSupported("immersive-vr").then((supported) => {
+    navigator.xr.isSessionSupported('immersive-ar').then(supported => {
       if (supported) {
-        xrButton.innerHTML = "Enter VR";
-        sessionSupported = true;
-        resolve();
-      } else {
-        xrButton.innerHTML = "VR not found";
+        xrButton.innerHTML = 'Enter AR'
+        sessionSupported = true
+        resolve()
+      }else{
+        xrButton.innerHTML = 'AR not found'
       }
-    });
-  });
+    })
+  })
 }
 
 export function onButtonClicked() {
   if (!xrSession) {
-    // Start the XR application.
-    initXR();
+    navigator.xr.requestSession('immersive-ar', {
+      optionalFeatures: ['dom-overlay'],
+      requiredFeatures: ['local', 'hit-test'],
+      domOverlay: {root: document.getElementById('app')},
+    }).then(session => onSessionStarted(session), onRequestSessionError)
   } else {
-    xrSession.end();
+    xrSession.end()
   }
+}
+
+function onSessionStarted(session) {
+  xrSession = session 
+  session.addEventListener('end', onSessionEnded)
+  session.addEventListener("select", onSelectionEvent)
+
+  window.eventBus.$on('catalogueModify', data => {
+    isCatalogueOpen = data
+    if(targetObject != null) {
+      cancelTargetObject()
+    }
+  })
+
+  // create a canvas element and WebGL context for rendering
+  let canvas = document.createElement('canvas')
+  gl = canvas.getContext('webgl', { xrCompatible: true })
+  
+  // here we ask for viewer reference space, since we will be casting a ray
+  // from a viewer towards a detected surface. The results of ray and surface intersection
+  // will be obtained via xrHitTestSource variable
+  session.requestReferenceSpace('viewer').then(refSpace => {
+    session.requestHitTestSource({ space: refSpace }).then(hitTestSource => {
+      xrHitTestSource = hitTestSource
+    })
+  })
+  session.requestReferenceSpace('local').then(refSpace => {
+    xrRefSpace = refSpace
+
+    // start WebXR rendering loop
+    session.requestAnimationFrame(onXRFrame)
+  })
+
+  session.updateRenderState({ baseLayer: new XRWebGLLayer(xrSession, gl) })
+
+  //initialize three.js scene
+  initScene(gl, session)
+}
+
+function onRequestSessionError(ex) {
+  console.error(ex.message)
+}
+
+function onSessionEnded(event) {
+  xrSession = null
+  gl = null
+  if (xrHitTestSource) xrHitTestSource.cancel()
+  xrHitTestSource = null
+}
+
+function onXRFrame(t, frame) {  
+  let session = frame.session
+  session.requestAnimationFrame(onXRFrame)
+
+  if(isCatalogueOpen && placeObjectButtons === true){
+    hidePlaceObjectDiv()
+    placeObjectButtons = false
+  }else if(isCatalogueOpen && objectSelectedButtons === true) {
+    hideObjectSelectedDivs()
+    hideTargetDot()
+    objectSelectedButtons = false
+  }else if(!isCatalogueOpen && modelLoaded != null && placeObjectButtons === false && reticle.visible === true) {
+    showPlaceObjectDiv()
+    hideTargetDot()
+    placeObjectButtons = true
+  }else if(!isCatalogueOpen && targetObject != null && objectSelectedButtons === false) {
+    showObjectSelectedDivs()
+    objectSelectedButtons = true
+  }else if(!isCatalogueOpen && modelLoaded == null && !existModelsOnScene()) {
+    hideTargetDot()
+  }
+
+  if (xrHitTestSource && modelLoaded != null) {
+    // obtain hit test results by casting a ray from the center of device screen
+    // into AR view. Results indicate that ray intersected with one or more detected surfaces
+    const hitTestResults = frame.getHitTestResults(xrHitTestSource)
+    if (hitTestResults.length && modelLoaded != null) {
+      // obtain a local pose at the intersection point
+      const pose = hitTestResults[0].getPose(xrRefSpace)
+
+      // place a reticle at the intersection point
+      reticle.matrix.fromArray( pose.transform.matrix )
+      reticle.visible = true
+    }
+  } else {  // do not show a reticle if no surfaces are intersected
+    reticle.visible = false
+    if(placeObjectButtons === true){
+      hidePlaceObjectDiv()
+      placeObjectButtons = false
+    }
+  }
+
+  if(!isCatalogueOpen && targetObject === null && modelLoaded === null && existModelsOnScene()) {
+    showTargetDot()
+  }
+
+  if(!isCatalogueOpen && targetObject != null && modelLoaded === null && existModelsOnScene()){
+    hideTargetDot()
+  }
+
+  if(targetObject === null && objectSelectedButtons === true) {
+    hideObjectSelectedDivs()
+    objectSelectedButtons = false
+  }
+
+  if(modelLoaded === null && placeObjectButtons === true) {
+    hidePlaceObjectDiv()
+    placeObjectButtons = false
+  }
+
+  // bind our gl context that was created with WebXR to threejs renderer
+  gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer)
+  renderer.render(scene, camera)
+}
+
+function onSelectionEvent(event) {
+  let source = event.inputSource
+  if (source.targetRayMode != "screen") {
+    return
+  }
+  if(event.type === "select" && !isCatalogueOpen && !placeObjectButtons && !objectSelectedButtons && existModelsOnScene()) {
+    getModelOnSelect()
+  }
+}
+
+function showPlaceObjectDiv() {
+  document.getElementById('checkButtonDiv').style.display = 'flex'
+  document.getElementById('cancelPlaceModelButtonDiv').style.display = 'flex'
+}
+
+function hidePlaceObjectDiv() {
+  document.getElementById('checkButtonDiv').style.display = 'none'
+  document.getElementById('cancelPlaceModelButtonDiv').style.display = 'none'
+}
+
+function hideObjectSelectedDivs() {
+  document.getElementById('trashButtonDiv').style.display = 'none'
+  document.getElementById('cancelButtonDiv').style.display = 'none'
+  document.getElementById('rotateLeftButtonDiv').style.display = 'none'
+  document.getElementById('rotateRightButtonDiv').style.display = 'none'
+}
+
+function showObjectSelectedDivs() {
+  document.getElementById('trashButtonDiv').style.display = 'flex'
+  document.getElementById('cancelButtonDiv').style.display = 'flex'
+  document.getElementById('rotateLeftButtonDiv').style.display = 'flex'
+  document.getElementById('rotateRightButtonDiv').style.display = 'flex'
+}
+
+function hideTargetDot() {
+  document.getElementById('targetDotDiv').style.display = 'none' 
+}
+
+function showTargetDot() {
+  document.getElementById('targetDotDiv').style.display = 'flex' 
+}
+
+export default {
+  checkXR,
 }

@@ -14,5 +14,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ThemeSwitcher: typeof import('./src/@core/components/ThemeSwitcher.vue')['default']
+    XrButton: typeof import('./src/@core/components/webxr/XrButton.vue')['default']
   }
 }
