@@ -41,19 +41,13 @@ export const initScene = (gl, session) => {
   renderer.xr.setReferenceSpaceType('local')
   renderer.xr.setSession(session)
 
-  let checkButton = document.getElementById('checkButton')
-  let cancelPlaceModelButton = document.getElementById('cancelPlaceModelButton')
-  let trashButton = document.getElementById('trashButton')
-  let cancelButton = document.getElementById('cancelButton')
-  let rotateLeftButton = document.getElementById('rotateLeftButton')
-  let rotateRightButton = document.getElementById('rotateRightButton')
 
-  checkButton.addEventListener('click', placeObject)
-  cancelPlaceModelButton.addEventListener('click', stopPlacingModel)
-  trashButton.addEventListener('click', deleteTargetObject)
-  cancelButton.addEventListener('click', cancelTargetObject)
-  rotateLeftButton.addEventListener('click', rotateLeftModel)
-  rotateRightButton.addEventListener('click', rotateRightModel)
+  // checkButton.addEventListener('click', placeObject)
+  // cancelPlaceModelButton.addEventListener('click', stopPlacingModel)
+  // trashButton.addEventListener('click', deleteTargetObject)
+  // cancelButton.addEventListener('click', cancelTargetObject)
+  // rotateLeftButton.addEventListener('click', rotateLeftModel)
+  // rotateRightButton.addEventListener('click', rotateRightModel)
 
   let appDiv = document.getElementById('app')
   appDiv.style.overflow = 'scroll'

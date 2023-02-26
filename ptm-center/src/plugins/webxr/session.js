@@ -65,12 +65,6 @@ function onSessionStarted(session) {
   session.addEventListener('end', onSessionEnded)
   session.addEventListener("select", onSelectionEvent)
 
-  window.eventBus.$on('catalogueModify', data => {
-    isCatalogueOpen = data
-    if(targetObject != null) {
-      cancelTargetObject()
-    }
-  })
 
   // create a canvas element and WebGL context for rendering
   let canvas = document.createElement('canvas')
@@ -111,62 +105,6 @@ function onSessionEnded(event) {
 function onXRFrame(t, frame) {  
   let session = frame.session
   session.requestAnimationFrame(onXRFrame)
-
-  if(isCatalogueOpen && placeObjectButtons === true){
-    hidePlaceObjectDiv()
-    placeObjectButtons = false
-  }else if(isCatalogueOpen && objectSelectedButtons === true) {
-    hideObjectSelectedDivs()
-    hideTargetDot()
-    objectSelectedButtons = false
-  }else if(!isCatalogueOpen && modelLoaded != null && placeObjectButtons === false && reticle.visible === true) {
-    showPlaceObjectDiv()
-    hideTargetDot()
-    placeObjectButtons = true
-  }else if(!isCatalogueOpen && targetObject != null && objectSelectedButtons === false) {
-    showObjectSelectedDivs()
-    objectSelectedButtons = true
-  }else if(!isCatalogueOpen && modelLoaded == null && !existModelsOnScene()) {
-    hideTargetDot()
-  }
-
-  if (xrHitTestSource && modelLoaded != null) {
-    // obtain hit test results by casting a ray from the center of device screen
-    // into AR view. Results indicate that ray intersected with one or more detected surfaces
-    const hitTestResults = frame.getHitTestResults(xrHitTestSource)
-    if (hitTestResults.length && modelLoaded != null) {
-      // obtain a local pose at the intersection point
-      const pose = hitTestResults[0].getPose(xrRefSpace)
-
-      // place a reticle at the intersection point
-      reticle.matrix.fromArray( pose.transform.matrix )
-      reticle.visible = true
-    }
-  } else {  // do not show a reticle if no surfaces are intersected
-    reticle.visible = false
-    if(placeObjectButtons === true){
-      hidePlaceObjectDiv()
-      placeObjectButtons = false
-    }
-  }
-
-  if(!isCatalogueOpen && targetObject === null && modelLoaded === null && existModelsOnScene()) {
-    showTargetDot()
-  }
-
-  if(!isCatalogueOpen && targetObject != null && modelLoaded === null && existModelsOnScene()){
-    hideTargetDot()
-  }
-
-  if(targetObject === null && objectSelectedButtons === true) {
-    hideObjectSelectedDivs()
-    objectSelectedButtons = false
-  }
-
-  if(modelLoaded === null && placeObjectButtons === true) {
-    hidePlaceObjectDiv()
-    placeObjectButtons = false
-  }
 
   // bind our gl context that was created with WebXR to threejs renderer
   gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer)
