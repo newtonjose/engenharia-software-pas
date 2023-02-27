@@ -1,5 +1,5 @@
 <script setup>
-  import AnalyticsAward from '@/views/dashboards/analytics/AnalyticsAward.vue'
+import AnalyticsAward from '@/views/dashboards/analytics/AnalyticsAward.vue'
 import AnalyticsBarCharts from '@/views/dashboards/analytics/AnalyticsBarCharts.vue'
 import AnalyticsDatatable from '@/views/dashboards/analytics/AnalyticsDatatable.vue'
 import AnalyticsDepositWithdraw from '@/views/dashboards/analytics/AnalyticsDepositWithdraw.vue'
@@ -9,6 +9,7 @@ import AnalyticsTotalProfitLineCharts from '@/views/dashboards/analytics/Analyti
 import AnalyticsTransactions from '@/views/dashboards/analytics/AnalyticsTransactions.vue'
 import AnalyticsWeeklyOverview from '@/views/dashboards/analytics/AnalyticsWeeklyOverview.vue'
 import CardStatisticsVertical from '@core/components/CardStatisticsVertical.vue'
+import TransfersSolicitations from '@/views/user-interface/transfers/TransfersSolicitations.vue'
 
 const totalProfit = {
   title: 'Total Profit',
@@ -76,9 +77,7 @@ const newProject = {
       cols="12"
       md="8"
     >
-      <AnalyticsDepositWithdraw />
+      <TransfersSolicitations />
     </VCol>
-
-
   </VRow>
 </template>
