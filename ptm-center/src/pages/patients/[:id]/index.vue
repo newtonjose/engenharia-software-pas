@@ -38,7 +38,7 @@ export default {
 <template>
   <div>
     <p class="text-2xl mb-6">
-      Paciente
+      Prontuário
     </p>
   </div>
   <VRow>
@@ -51,9 +51,9 @@ export default {
         <div class="d-flex flex-column-reverse flex-md-row">
           <div>
             <VCardItem>
-              <VCardTitle>Stumptown Roasters</VCardTitle>
+              <VCardTitle>Edwina Ebsworth</VCardTitle>
               <VCardSubtitle class="text-caption pa-0">
-                London, UK
+                Goiânia, GO
               </VCardSubtitle>
             </VCardItem>
 

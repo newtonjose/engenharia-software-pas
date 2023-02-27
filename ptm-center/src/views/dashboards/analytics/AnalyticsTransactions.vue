@@ -30,7 +30,7 @@ const statistics = [
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>Transactions</VCardTitle>
+      <VCardTitle>Transferências</VCardTitle>
 
       <template #append>
         <div class="me-n3">
@@ -51,7 +51,7 @@ const statistics = [
 
     <VCardText>
       <h6 class="text-sm mb-12">
-        <span>Total 48.5% Growth 😎</span>
+        <span>Total 48.5%</span>
         <span class="font-weight-regular"> this month</span>
       </h6>
 
