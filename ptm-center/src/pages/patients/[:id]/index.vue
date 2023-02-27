@@ -1,5 +1,30 @@
 <script setup>
 import avatar1 from '@/assets/images/avatars/avatar-1.png'
+
+import { onMounted } from 'vue'
+import { checkAR, onButtonClickedAr } from '@/plugins/webxr/session-ar'
+import { checkVR, onButtonClickedVr } from '@/plugins/webxr/session-vr'
+
+let isSessionSupportedAr = false
+let isSessionSupportedVr = false
+
+function enterToSceneAr() {
+  if (isSessionSupportedAr) {
+    onButtonClickedAr()
+  }
+}
+
+function enterToSceneVr() {
+  if (isSessionSupportedVr) {
+    onButtonClickedVr()
+  }
+}
+
+
+onMounted(() => {
+  isSessionSupportedAr = checkAR()
+  isSessionSupportedVr = checkVR()
+})
 </script>
 
 <template>
@@ -34,20 +59,15 @@ import avatar1 from '@/assets/images/avatars/avatar-1.png'
 
             <VCardActions>
               <VBtn
-                rel="noopener noreferrer"
+                id="vr-button"
                 color="primary"
-                target="_blank"
-                @click="$router.push({ path: `/patients/${$route.params.id}/avatar` })"
-              >
-                Avatar
-              </VBtn>
+                @click="enterToSceneVr"
+              />
               <VBtn
-                target="_blank"
-                rel="noopener noreferrer"
-                @click="$router.push({ path: `/patients/${$route.params.id}/body` })"
-              >
-                Body
-              </VBtn>
+                id="ar-button"
+                color="primary"
+                @click="enterToSceneAr"
+              />
             </VCardActions>
           </div>
 

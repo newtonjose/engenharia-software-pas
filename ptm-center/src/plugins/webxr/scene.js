@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { setObjectSelectedButtons } from './session.js'
+import { setObjectSelectedButtons } from './session-ar.js'
 
 export let renderer = null
 export let scene = null
@@ -59,10 +59,10 @@ export const initScene = (gl, session) => {
     new THREE.MeshPhongMaterial({ color: '#2d4258' }),
   )
 
-  document.getElementById('home-menu').addEventListener(
-    'beforexrselect', ev => {
-      ev.preventDefault()
-    })
+  // document.getElementById('home-menu').addEventListener(
+  //   'beforexrselect', ev => {
+  //     ev.preventDefault()
+  //   })
 
   reticle.matrixAutoUpdate = false
   reticle.visible = false

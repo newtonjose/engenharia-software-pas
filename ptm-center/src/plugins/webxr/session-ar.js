@@ -11,7 +11,7 @@ import {
   cancelTargetObject,
 } from './scene.js'
 
-let xrButton = null
+let arButton = null
 let sessionSupported = false
 let xrSession = null
 let xrRefSpace = null
@@ -25,8 +25,8 @@ export function setObjectSelectedButtons(value) {
   objectSelectedButtons = value
 }
 
-export async function checkXR() {
-  xrButton = document.getElementById('xr-button')
+export async function checkAR() {
+  arButton = document.getElementById('ar-button')
   if (navigator.xr) {
     await checkSupportedState()
     
@@ -38,17 +38,17 @@ function checkSupportedState() {
   return new Promise((resolve, reject) => {
     navigator.xr.isSessionSupported('immersive-ar').then(supported => {
       if (supported) {
-        xrButton.innerHTML = 'Enter AR'
+        arButton.innerHTML = 'AR Avatar'
         sessionSupported = true
         resolve()
       }else{
-        xrButton.innerHTML = 'AR not found'
+        arButton.innerHTML = 'AR Not Found'
       }
     })
   })
 }
 
-export function onButtonClicked() {
+export function onButtonClickedAr() {
   if (!xrSession) {
     navigator.xr.requestSession('immersive-ar', {
       optionalFeatures: ['dom-overlay'],
@@ -154,5 +154,5 @@ function showTargetDot() {
 }
 
 export default {
-  checkXR,
+  checkAR,
 }
