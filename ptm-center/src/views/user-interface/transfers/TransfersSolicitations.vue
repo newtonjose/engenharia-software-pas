@@ -9,69 +9,53 @@ import gumroad from '@/assets/images/logos/gumroad.png'
 import mastercardLabel from '@/assets/images/logos/mastercard-label.png'
 import slack from '@/assets/images/logos/slack.png'
 import stripe from '@/assets/images/logos/stripe.png'
+import avatar1 from '@/assets/images/avatars/avatar-1.png'
+import avatar2 from '@/assets/images/avatars/avatar-2.png'
+import avatar3 from '@/assets/images/avatars/avatar-3.png'
+import avatar4 from '@/assets/images/avatars/avatar-4.png'
 
 const deposits = [
   {
-    title: 'Gumroad Account',
+    title: 'Edwina Ebsworth',
     subtitle: 'Sell UI Kit',
-    amount: '+$4,650',
-    logo: gumroad,
+    logo: avatar1,
   },
   {
-    title: 'Mastercard',
+    title: 'Korrie O\'Crevy',
     subtitle: 'Wallet deposit',
-    amount: '+$92,705',
-    logo: mastercardLabel,
+    logo: avatar2,
   },
   {
-    title: 'Stripe Account',
+    title: 'Eileen Diehn',
     subtitle: 'iOS Application',
-    amount: '+$957',
-    logo: stripe,
+    logo: avatar3,
   },
   {
-    title: 'American Bank',
-    subtitle: 'American Bank',
-    amount: '+$6,837',
-    logo: americanBank,
-  },
-  {
-    title: 'Bank Account',
-    subtitle: 'Wallet deposit',
-    amount: '+$8,934',
-    logo: citiBank,
+    title: 'Stella Ganderton',
+    subtitle: 'iOS Application',
+    logo: avatar4,
   },
 ]
 const withdraws = [
   {
-    title: 'Google Adsense',
+    title: 'Edwina Ebsworth',
     subtitle: 'Paypal deposit',
-    amount: '-$145',
-    logo: google,
+    logo: avatar1,
   },
   {
-    title: 'Github Enterprise',
+    title: 'Korrie O\'Crevy',
     subtitle: 'Security & compliance',
-    amount: '-$1870',
-    logo: github,
+    logo: avatar2,
   },
   {
-    title: 'Upgrade Slack Plan',
+    title: 'Eileen Diehn',
     subtitle: 'Debit card deposit',
-    amount: '-$450',
-    logo: slack,
+    logo: avatar3,
   },
   {
-    title: 'Digital Ocean',
-    subtitle: 'Cloud Hosting',
-    amount: '-$540',
-    logo: digitalOcean,
-  },
-  {
-    title: 'AWS Account',
-    subtitle: 'Choosing a Cloud Platform',
-    amount: '-$21',
-    logo: aws,
+    title: 'Stella Ganderton',
+    subtitle: 'Debit card deposit',
+    logo: avatar4,
   },
 ]
 </script>
@@ -84,7 +68,7 @@ const withdraws = [
         md="6"
       >
         <VCardItem>
-          <VCardTitle>Deposit</VCardTitle>
+          <VCardTitle>Origem</VCardTitle>
 
           <template #append>
             <a
@@ -140,7 +124,7 @@ const withdraws = [
         md="6"
       >
         <VCardItem>
-          <VCardTitle>Withdraw</VCardTitle>
+          <VCardTitle>Destino</VCardTitle>
 
           <template #append>
             <a

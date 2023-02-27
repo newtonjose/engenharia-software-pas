@@ -28,7 +28,6 @@ export function setObjectSelectedButtons(value) {
 
 
 export async function checkVR() {
-  console.log("ERROR")
   vrButton = document.getElementById('vr-button')
 
   if (navigator.xr) {

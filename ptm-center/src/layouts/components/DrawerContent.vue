@@ -56,88 +56,73 @@ const upgradeBanner = computed(() => {
       }"
     />
     <!-- 👉 Pages -->
-    <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />
-    <VerticalNavLink
-      :item="{
-        title: 'Login',
-        to: 'login',
-        target: '_blank',
-        icon: { icon: 'mdi-login' }
-      }"
-    />
-    <VerticalNavLink
-      :item="{
-        title: 'Register',
-        to: 'register',
-        target: '_blank',
-        icon: { icon: 'mdi-account-plus-outline' }
-      }"
-    />
+<!--    <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />-->
+<!--    <VerticalNavLink-->
+<!--      :item="{-->
+<!--        title: 'Login',-->
+<!--        to: 'login',-->
+<!--        target: '_blank',-->
+<!--        icon: { icon: 'mdi-login' }-->
+<!--      }"-->
+<!--    />-->
+<!--    <VerticalNavLink-->
+<!--      :item="{-->
+<!--        title: 'Register',-->
+<!--        to: 'register',-->
+<!--        target: '_blank',-->
+<!--        icon: { icon: 'mdi-account-plus-outline' }-->
+<!--      }"-->
+<!--    />-->
 
-    <!-- ℹ️ This path doesn't exist so 404 route will catch this undefined path -->
-    <VerticalNavLink
-      :item="{
-        title: 'Error',
-        to: { path: '/error' },
-        target: '_blank',
-        icon: { icon: 'mdi-alert-circle-outline' }
-      }"
-    />
+<!--    &lt;!&ndash; ℹ️ This path doesn't exist so 404 route will catch this undefined path &ndash;&gt;-->
+<!--    <VerticalNavLink-->
+<!--      :item="{-->
+<!--        title: 'Error',-->
+<!--        to: { path: '/error' },-->
+<!--        target: '_blank',-->
+<!--        icon: { icon: 'mdi-alert-circle-outline' }-->
+<!--      }"-->
+<!--    />-->
 
-    <!-- 👉 User Interface -->
-    <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
+<!--    &lt;!&ndash; 👉 User Interface &ndash;&gt;-->
+<!--    <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />-->
 
-    <VerticalNavLink
-      :item="{
-        title: 'Typography',
-        to: 'typography',
-        icon: { icon: 'mdi-alpha-t-box-outline' }
-      }"
-    />
-    <VerticalNavLink
-      :item="{
-        title: 'Icons',
-        to: 'icons',
-        icon: { icon: 'mdi-eye-outline' }
-      }"
-    />
-    <VerticalNavLink
-      :item="{
-        title: 'Cards',
-        to: 'card-basic',
-        icon: { icon: 'mdi-credit-card-outline' }
-      }"
-    />
-    <VerticalNavLink
-      :item="{
-        title: 'Tables',
-        to: 'tables',
-        icon: { icon: 'mdi-table' }
-      }"
-    />
-    <VerticalNavLink
-      :item="{
-        title: 'Form Layouts',
-        to: 'form-layouts',
-        icon: { icon: 'mdi-form-select' }
-      }"
-    />
+<!--    <VerticalNavLink-->
+<!--      :item="{-->
+<!--        title: 'Typography',-->
+<!--        to: 'typography',-->
+<!--        icon: { icon: 'mdi-alpha-t-box-outline' }-->
+<!--      }"-->
+<!--    />-->
+<!--    <VerticalNavLink-->
+<!--      :item="{-->
+<!--        title: 'Icons',-->
+<!--        to: 'icons',-->
+<!--        icon: { icon: 'mdi-eye-outline' }-->
+<!--      }"-->
+<!--    />-->
+<!--    <VerticalNavLink-->
+<!--      :item="{-->
+<!--        title: 'Cards',-->
+<!--        to: 'card-basic',-->
+<!--        icon: { icon: 'mdi-credit-card-outline' }-->
+<!--      }"-->
+<!--    />-->
+<!--    <VerticalNavLink-->
+<!--      :item="{-->
+<!--        title: 'Tables',-->
+<!--        to: 'tables',-->
+<!--        icon: { icon: 'mdi-table' }-->
+<!--      }"-->
+<!--    />-->
+<!--    <VerticalNavLink-->
+<!--      :item="{-->
+<!--        title: 'Form Layouts',-->
+<!--        to: 'form-layouts',-->
+<!--        icon: { icon: 'mdi-form-select' }-->
+<!--      }"-->
+<!--    />-->
   </ul>
-
-  <!-- 👉 illustration -->
-  <a
-    href="https://themeselection.com/item/materio-vuetify-vuejs-admin-template"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img
-      :src="upgradeBanner"
-      alt="upgrade-banner"
-      transition="scale-transition"
-      class="upgrade-banner mx-auto"
-      style="max-width: 230px"
-    >
-  </a>
 </template>
 
 <style lang="scss">

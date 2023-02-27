@@ -1,7 +1,7 @@
 <script setup>
 import avatar1 from '@/assets/images/avatars/avatar-1.png'
 
-import { onMounted } from 'vue'
+import { onMounted , ref } from 'vue'
 import { checkAR, onButtonClickedAr } from '@/plugins/webxr/session-ar'
 import { checkVR, onButtonClickedVr } from '@/plugins/webxr/session-vr'
 
@@ -27,6 +27,14 @@ onMounted(() => {
 })
 </script>
 
+<script>
+export default {
+  data: () => ({
+    dialog: false,
+  }),
+}
+</script>
+
 <template>
   <div>
     <p class="text-2xl mb-6">
@@ -49,9 +57,9 @@ onMounted(() => {
               </VCardSubtitle>
             </VCardItem>
 
-            <VCardText class="d-flex align-center flex-wrap body-1">
-              <span>5 Star | 98 reviews</span>
-            </VCardText>
+<!--            <VCardText class="d-flex align-center flex-wrap body-1">-->
+<!--              <span>5 Star | 98 reviews</span>-->
+<!--            </VCardText>-->
 
             <VCardText>
               Before there was a United States of America, there were coffee houses, because how are you supposed to build.

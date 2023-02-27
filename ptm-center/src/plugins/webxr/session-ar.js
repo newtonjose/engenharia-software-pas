@@ -113,9 +113,14 @@ function onXRFrame(t, frame) {
 
 function onSelectionEvent(event) {
   let source = event.inputSource
+
+  console.log(source.targetRayMode)
   if (source.targetRayMode != "screen") {
     return
   }
+
+  // document.getElementById('checkButtonDiv').style.display = 'flex'
+  console.log("SELECTION")
   if(event.type === "select" && !isCatalogueOpen && !placeObjectButtons && !objectSelectedButtons && existModelsOnScene()) {
     getModelOnSelect()
   }
