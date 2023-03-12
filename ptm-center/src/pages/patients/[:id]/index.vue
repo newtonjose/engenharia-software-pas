@@ -1,7 +1,7 @@
 <script setup>
 import avatar1 from '@/assets/images/avatars/avatar-1.png'
 
-import { onMounted , ref } from 'vue'
+import { onMounted } from 'vue'
 import { checkAR, onButtonClickedAr } from '@/plugins/webxr/session-ar'
 import { checkVR, onButtonClickedVr } from '@/plugins/webxr/session-vr'
 
@@ -57,12 +57,13 @@ export default {
               </VCardSubtitle>
             </VCardItem>
 
-<!--            <VCardText class="d-flex align-center flex-wrap body-1">-->
-<!--              <span>5 Star | 98 reviews</span>-->
-<!--            </VCardText>-->
+            <!--            <VCardText class="d-flex align-center flex-wrap body-1"> -->
+            <!--              <span>5 Star | 98 reviews</span> -->
+            <!--            </VCardText> -->
 
             <VCardText>
-              Before there was a United States of America, there were coffee houses, because how are you supposed to build.
+              Before there was a United States of America, there were coffee houses, because how are you supposed to
+              build.
             </VCardText>
 
             <VCardActions>
@@ -71,11 +72,15 @@ export default {
                 color="primary"
                 @click="enterToSceneVr"
               />
-              <VBtn
-                id="ar-button"
-                color="primary"
-                @click="enterToSceneAr"
-              />
+              <RouterLink
+                :to="{ name: 'patients-:id-avatar', params: {id: $route.params.id}}"
+                target="_blank"
+              >
+                <VBtn
+                  id="ar-button"
+                  color="primary"
+                />
+              </RouterLink>
             </VCardActions>
           </div>
 
